@@ -106,8 +106,8 @@ class Tetris_Binary(gym.Env):
         # Define the action space
         self.action_space = gym.spaces.discrete.Discrete(self.width * self.num_rotations)
         
-        # Defining the Number of Elements and features: piece, lines cleared
-        num_of_elements =  self.width * self.height + 2
+        # Defining the Number of Elements and features: piece
+        num_of_elements =  self.width * self.height + 1
         self.state_size = num_of_elements
 
         # Defining observation space
@@ -221,7 +221,7 @@ class Tetris_Binary(gym.Env):
     
     # Step
     def step(self, action):
-        print("Previous:", self.previous)
+        #print("Previous:", self.previous)
         current_piece_board = self.board
         current_piece_board = np.array(current_piece_board).flatten()
         
@@ -232,13 +232,13 @@ class Tetris_Binary(gym.Env):
         piece = np.array(current_state[-1])
         piece = np.reshape(piece, (1,))
 
-        lines_cleared = np.array(current_state[0])
-        lines_cleared = np.reshape(lines_cleared, (1,))
+        # lines_cleared = np.array(current_state[0])
+        # lines_cleared = np.reshape(lines_cleared, (1,))
 
         # Procure all features to calculate rewards -- current
         all_features = all_features[action]
 
-        invalid_actions = [key for key, value in current_states.items() if all(elem == 0 for elem in value)]
+        invalid_actions = [key for key, value in current_states.items() if np.array_equal(value, [0, 0, 0, 0, 0, 0, 0, 0, -1, 0])]
         if action in invalid_actions:
             self.invalid = True
         pos = [action[0], 0]
@@ -271,10 +271,11 @@ class Tetris_Binary(gym.Env):
         next_piece_board =  self.board
         next_piece_board = np.array(next_piece_board).flatten()
         next_piece_board = np.concatenate((next_piece_board, piece))
-        next_piece_board = np.concatenate((next_piece_board, lines_cleared))
+        # next_piece_board = np.concatenate((next_piece_board, lines_cleared))
 
         # Set all features to previous
         self.previous = all_features
+        #print("Current:", all_features)
         info = {"prev_piece_board": current_piece_board, "next_piece_board": next_piece_board}
         return next_piece_board, reward, done, False, info
     
@@ -289,8 +290,8 @@ class Tetris_Binary(gym.Env):
         piece = np.array(-1)
         piece = np.reshape(piece, (1,))
 
-        lines_cleared = np.array(0)
-        lines_cleared = np.reshape(lines_cleared, (1,))
+        # lines_cleared = np.array(0)
+        # lines_cleared = np.reshape(lines_cleared, (1,))
 
         # Setting initial previous state as reset state
         self.previous = []
@@ -299,7 +300,7 @@ class Tetris_Binary(gym.Env):
         self.previous = np.concatenate((arr1_, arr2_))
 
         obs = np.concatenate((np.array(self.board).flatten(), piece))
-        obs = np.concatenate((obs, lines_cleared))
+        # obs = np.concatenate((obs, lines_cleared))
         return obs.flatten(), {}
     
     def _set_piece(self, on):
@@ -505,8 +506,8 @@ class Tetris_Binary(gym.Env):
                 self.anchor = old_anchor
 
             self.shape = rotated(self.shape)
-        arr1_ = np.array([0 for _ in range(10 - 1)])
-        arr2_ = [-1]
+        arr1_ = np.array([0 for _ in range(10 - 2)])
+        arr2_ = [-1, 0]
         invalid_setting = np.concatenate((arr1_, arr2_))
         for i in range(self.width):
             for j in range(4):
@@ -517,11 +518,15 @@ class Tetris_Binary(gym.Env):
     
     # Rendering
     def render(self):
-        #self._set_piece(True)
-        board = self.board_colors[:].T
+        # self._set_piece(True)
+        #print("In render", self.board, self.board_colors)
+        board = self.board[:].T
 
-        board = [[tetromino_colors[board[i][j]]  for j in range(self.width)] for i in range(self.height)]
-        #self._set_piece(False)
+        board_colors = self.board_colors[:].T
+
+        board = [[tetromino_colors[board_colors[i][j]] if board[i][j] else black for j in range(self.width)] for i in range(self.height)]
+        # self._set_piece(False)
+        tetrimino = shapes[shape_names[self.selected_tetrimino]]
 
         img = np.array(board).reshape((self.height, self.width, 3)).astype(np.uint8)
         img = cv.resize(img, (self.width * 25, self.height * 25), interpolation=cv.INTER_NEAREST)
@@ -530,15 +535,34 @@ class Tetris_Binary(gym.Env):
         img[[i * 25 for i in range(self.height)], :, :] = 0
         img[:, [i * 25 for i in range(self.width)], :] = 0
 
-        # Add extra spaces on the top to display game score
-        extra_spaces = np.zeros((2 * 25, self.width * 25, 3))
-        #cv.putText(extra_spaces, "Score: " + str(score), (15, 35), cv.FONT_HERSHEY_SIMPLEX, 1, white, 2, cv.LINE_AA)
+        # Rendering Tetrimino
+        tetrimino = shapes[shape_names[self.selected_tetrimino]]
 
-        # Add extra spaces to the board image
-        img = np.concatenate((extra_spaces, img), axis=0)
+        # Create a new image for rendering the Tetrimino
+        tetrimino_img = np.zeros((4 * 25, img.shape[1], 3))
 
-        # Draw horizontal line to separate board and extra space area
-        img[50, :, :] = white
+        # Calculate the center offset for the Tetrimino within tetrimino_img
+        center_offset_x = (tetrimino_img.shape[1] - 4 * 25) // 2
+        center_offset_y = (tetrimino_img.shape[0] - 4 * 25) // 2
 
-        cv.imshow('Tetris', img)
+        for coord in tetrimino:
+            x, y = coord
+            tetrimino_img[(center_offset_y + (y + 2) * 25): (center_offset_y + (y + 3) * 25),
+                        (center_offset_x + (x + 2) * 25): (center_offset_x + (x + 3) * 25), :] = tetromino_colors[self.color]
+
+        # Draw lines to separate the different sections of the Tetrimino
+        for i in range(1, 4):
+            tetrimino_img[(center_offset_y + i * 25), :, :] = 0  # Draw horizontal lines
+            tetrimino_img[:, (center_offset_x + i * 25), :] = 0  # Draw vertical lines
+
+        # Resize the tetrimino_img to match the width of img
+        tetrimino_img = cv.resize(tetrimino_img, (img.shape[1], tetrimino_img.shape[0]), interpolation=cv.INTER_NEAREST)
+
+        # Create a new image by concatenating the tetrimino_img and existing img vertically
+        rendered_img = np.concatenate((tetrimino_img, img), axis=0)
+
+        # Draw a horizontal line to separate the Tetrimino section from the board area
+        rendered_img[4 * 25, :, :] = white
+
+        cv.imshow('Tetris', rendered_img)
         cv.waitKey(1)
