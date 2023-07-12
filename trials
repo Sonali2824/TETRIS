@@ -1,0 +1,18 @@
+[I 2023-07-12 13:30:08,652] Trial 4 finished with value: 8.571829292726909 and parameters: {'linear_hidden_units': [200, 160, 110, 70], 'hidden_activations': 'relu', 'dropout': 0.3, 'clip_rewards': False, 'batch_size': 360, 'batch_norm': False, 'critic_initialiser': 'Xavier', 'discount_rate': 0.95, 'min_steps_before_learning': 258, 'learning_rate': 0.0001, 'actor_gradient_clipping_norm': 0.4806230644038184, 'buffer_size': 603473, 'tau': 1, 'critic_gradient_clipping_norm': 5.53995816011155}. Best is trial 3 with value: 20.366259266680025.
+Best trial:
+  Value: 20.366259266680025
+  Params:
+    linear_hidden_units: [256, 256]
+    hidden_activations: leakyrelu
+    dropout: 0.3
+    clip_rewards: True
+    batch_size: 640
+    batch_norm: False
+    critic_initialiser: Xavier
+    discount_rate: 0.99
+    min_steps_before_learning: 258
+    learning_rate: 0.0003
+    actor_gradient_clipping_norm: 2.8282551478751596
+    buffer_size: 823799
+    tau: 0.05
+    critic_gradient_clipping_norm: 3.8464630332832015
