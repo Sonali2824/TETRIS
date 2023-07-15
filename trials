@@ -16,3 +16,25 @@ Best trial:
     buffer_size: 823799
     tau: 0.05
     critic_gradient_clipping_norm: 3.8464630332832015
+
+
+
+
+[I 2023-07-15 05:25:56,682] Trial 49 finished with value: 26.486275295531957 and parameters: {'linear_hidden_units': [256, 256], 'hidden_activations': 'sigmoid', 'dropout': 0.3, 'clip_rewards': True, 'batch_size': 360, 'batch_norm': False, 'critic_initialiser': 'Xavier', 'discount_rate': 0.95, 'min_steps_before_learning': 959, 'learning_rate': 0.001, 'actor_gradient_clipping_norm': 9.805081282927725, 'buffer_size': 706109, 'tau': 0.005, 'critic_gradient_clipping_norm': 9.999201264112997}. Best is trial 34 with value: 33.607092766980564.
+Best trial:
+  Value: 33.607092766980564
+  Params:
+    linear_hidden_units: [256, 256]
+    hidden_activations: sigmoid
+    dropout: 0.2
+    clip_rewards: True
+    batch_size: 128
+    batch_norm: False
+    critic_initialiser: He
+    discount_rate: 0.99
+    min_steps_before_learning: 853
+    learning_rate: 0.001
+    actor_gradient_clipping_norm: 8.49952895643033
+    buffer_size: 938111
+    tau: 0.005
+    critic_gradient_clipping_norm: 7.622897181274258
