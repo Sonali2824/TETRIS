@@ -1,0 +1,17 @@
+The phenomenon you described, where the masked-agent performs better than the unmasked-agent during training but the unmasked-agent performs better during evaluation, could be due to a phenomenon known as "exploration-exploitation trade-off" in reinforcement learning, particularly in the context of DQN agents.
+
+DQN (Deep Q-Network) is a type of reinforcement learning algorithm that uses deep neural networks to approximate the Q-values (expected future rewards) of different actions in a given state. During training, the agent aims to learn the optimal policy that maximizes its cumulative rewards over time.
+
+1. Training Phase:
+- Masked-Agent: During training, the masked-agent might initially perform better because it has a form of noise or randomness injected into its actions through the masking process. This noise can help the agent explore the environment more effectively and learn from different experiences. The masking process involves randomly setting some actions to be ignored or masked, forcing the agent to try different actions and explore the environment more widely. This exploration can lead to better learning and faster convergence in some cases.
+
+- Unmasked-Agent: However, the unmasked-agent, which is not subjected to this exploration noise, might struggle to explore and converge to the optimal policy as efficiently during the training phase.
+
+2. Evaluation Phase:
+- Masked-Agent: During evaluation, when the goal is to measure the actual performance of the agent, the exploration noise is removed or reduced. The agent then tends to exploit the learned policy more directly. In this case, the exploration noise becomes detrimental, leading to suboptimal performance compared to the unmasked-agent, which does not suffer from exploration noise.
+
+- Unmasked-Agent: The unmasked-agent, having had more time to train without the exploration noise, has potentially learned a more accurate representation of the optimal policy and can perform better during the evaluation phase.
+
+To address this issue, various exploration strategies and techniques are employed in reinforcement learning to balance the exploration and exploitation phases more effectively. For example, techniques like epsilon-greedy exploration, Boltzmann exploration, or adding exploration bonuses to the reward function can be used to encourage exploration during training while still ensuring the agent converges to a good policy for evaluation.
+
+Overall, this phenomenon highlights the importance of careful exploration strategies in training DQN agents to ensure they generalize well and perform effectively in unseen environments.
