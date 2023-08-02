@@ -1,0 +1,16 @@
+10 X 10:
+50 TRIALS --- 30K episodes
+Rewards: [6, 7, 8, 11]
+
+Best trial:
+  Value: 11.76
+  Params:
+    activation_fn_name: ReLU
+    batch_size: 512
+    buffer_size: 861133
+    gamma: 0.99
+    learning_rate: 0.0001
+    net_arch: [50, 50, 50]
+    reward_type: 7
+    seed: 508
+    tau: 0.005
