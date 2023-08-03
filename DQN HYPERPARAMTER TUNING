@@ -19,6 +19,7 @@ Best trial:
 10 X 10:
 50 TRIALS --- 8K episodes
 'reward_type', [6, 7, 8, 9, 11]
+db_10_50_re.sqlite3
 SAC
 
 
