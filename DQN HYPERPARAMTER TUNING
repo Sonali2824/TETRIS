@@ -1,6 +1,7 @@
 10 X 10:
 50 TRIALS --- 30K episodes
 Rewards: [6, 7, 8, 11]
+DQN
 
 Best trial:
   Value: 11.76
@@ -14,3 +15,41 @@ Best trial:
     reward_type: 7
     seed: 508
     tau: 0.005
+
+10 X 10:
+50 TRIALS --- 8K episodes
+'reward_type', [6, 7, 8, 9, 11]
+SAC
+
+
+[I 2023-08-03 16:10:18,330] Trial 49 finished with value: 0.027375 and parameters: {'actor_gradient_clipping_norm_actor': 9.667246098611816, 'batch_norm': False, 'batch_norm_actor': False, 'batch_norm_critic': False, 'batch_size': 128, 'buffer_size_critic': 822053, 'clip_rewards': False, 'critic_gradient_clipping_norm_critic': 4.000335242078499, 'critic_initialiser': 'He', 'critic_initialiser_actor': 'He', 'critic_initialiser_critic': 'Xavier', 'discount_rate': 0.99, 'dropout': 0.3, 'dropout_actor': 0.2, 'dropout_critic': 0.2, 'entropy_target': 0.8, 'hidden_activations': 'sigmoid', 'hidden_activations_actor': 'leakyrelu', 'hidden_activations_critic': 'leakyrelu', 'learning_rate_actor': 0.001, 'learning_rate_critic': 0.001, 'linear_hidden_units': [71, 40], 'linear_hidden_units_actor': [256, 256], 'linear_hidden_units_critic': [256, 256], 'min_steps_before_learning': 319, 'reward_type': 9, 'tau_critic': 0.05}. Best is trial 48 with value: 0.214.
+Best trial:
+  Value: 0.214
+  Params:
+    actor_gradient_clipping_norm_actor: 9.49191708591034
+    batch_norm: False
+    batch_norm_actor: False
+    batch_norm_critic: False
+    batch_size: 128
+    buffer_size_critic: 808656
+    clip_rewards: True
+    critic_gradient_clipping_norm_critic: 2.957642117580966
+    critic_initialiser: Xavier
+    critic_initialiser_actor: He
+    critic_initialiser_critic: Xavier
+    discount_rate: 0.99
+    dropout: 0.3
+    dropout_actor: 0.2
+    dropout_critic: 0.2
+    entropy_target: 0.3
+    hidden_activations: leakyrelu
+    hidden_activations_actor: leakyrelu
+    hidden_activations_critic: leakyrelu
+    learning_rate_actor: 0.001
+    learning_rate_critic: 0.001
+    linear_hidden_units: [71, 40]
+    linear_hidden_units_actor: [256, 256]
+    linear_hidden_units_critic: [256, 256]
+    min_steps_before_learning: 314
+    reward_type: 6
+    tau_critic: 0.05
